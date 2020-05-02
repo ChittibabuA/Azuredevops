@@ -63,4 +63,4 @@ $parametersPath = "https://" + $storageAccountName + ".blob.core.windows.net/" +
 ## Deploying resources on Azure using templates stored in a container
 ## in a storage account
 
-New-azResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name "myDeployment" -TemplateUri $templatePath -TemplateParameterUri $parametersPath
+New-azResourceGroupDeployment -Name "myDeployment" -ResourceGroupName $resourceGroupName -TemplateUri $templatePath -TemplateParameterUri $parametersPath
