@@ -15,26 +15,26 @@ Param (
 
 ## Create a resource group if not present ##
 
-Get-AzureRmResourceGroup -Name $resourceGroupName -ErrorVariable resourceGroupNotPresent -ErrorAction SilentlyContinue
+Get-azResourceGroup -Name $resourceGroupName -ErrorVariable resourceGroupNotPresent -ErrorAction SilentlyContinue
 
 if ($resourceGroupNotPresent)
 {
     # ResourceGroup doesn't exist
-    New-AzureRmResourceGroup -Name $resourceGroupName -Location $location
+    New-azResourceGroup -Name $resourceGroupName -Location $location
 }
 
 ## Create an Azure Storage Account ##
 
-Get-AzureRMStorageAccount -Name $storageAccountName -ResourceGroupName $resourceGroupName -ErrorVariable storageNotPresent -ErrorAction SilentlyContinue
+Get-azStorageAccount -Name $storageAccountName -ResourceGroupName $resourceGroupName -ErrorVariable storageNotPresent -ErrorAction SilentlyContinue
 
 if ($storageNotPresent){
-    New-AzureRMStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -Location $location -SkuName "Standard_LRS" -Kind Storage
+    New-azStorageAccount -ResourceGroupName $resourceGroupName -AccountName $storageAccountName -Location $location -SkuName "Standard_LRS" -Kind Storage
 }
 
 
 ## Retrieving storage context using key ##
 
-$accountKey = (Get-AzureRMStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName).Value[0]
+$accountKey = (Get-azStorageAccountKey -ResourceGroupName $resourceGroupName -Name $storageAccountName).Value[0]
 $context = New-AzureStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $accountKey 
 
 
@@ -63,4 +63,4 @@ $parametersPath = "https://" + $storageAccountName + ".blob.core.windows.net/" +
 ## Deploying resources on Azure using templates stored in a container
 ## in a storage account
 
-New-AzureRMResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name "myDeployment" -TemplateUri $templatePath -TemplateParameterUri $parametersPath
+New-azResourceGroupDeployment -ResourceGroupName $resourceGroupName -Name "myDeployment" -TemplateUri $templatePath -TemplateParameterUri $parametersPath
